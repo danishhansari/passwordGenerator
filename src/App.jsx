@@ -2,43 +2,42 @@ import Banner from "./components/Banner";
 import Navbar from "./components/Navbar";
 import "./style.css";
 import { BiRefresh } from "react-icons/bi";
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 function App() {
-  const [password, setPassword] = useState("");
-  const [length, setLength] = useState(8);
-  const [numberAllowed, setNumberAllowed] = useState(false);
-  const [characterAllowed, setCharacterAllowed] = useState(false);
-
-  // useRef for copying text
-  const passwordRef = useRef(null);
+  const [password, setPassword] = useState('');
+  const [length , setLength] = useState(8);
+  const [numberAllowed, setNumberAllowed] = useState(false)
+  const [characterAllowed, setCharacterAllowed] = useState(false)
+  const passwordRef = useRef(null)
 
   const passwordGenerator = useCallback(() => {
-    let pass = "";
-    let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      let pass = ""
+      let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+      if(numberAllowed) str += "0123456789"
+      if(characterAllowed) str += "!@#$%^&*()`~{}?";
 
-    if (numberAllowed) str += "0987654321";
-    if (characterAllowed) str += "!@#$%^&*()~`{}?";
-
-    for (let i = 1; i < length; i++) {
-      let randomChar = Math.floor(Math.random() * str.length + 1);
-      pass += str[randomChar];
-    }
-    setPassword(pass);
-  }, [length, numberAllowed, characterAllowed, setPassword]);
+      for(let i = 0;i < length ; i++) {
+        let random = Math.floor(Math.random() * str.length + 1)
+        pass += str.charAt(random)
+      }
+      setPassword(pass)
+  }, [length, numberAllowed, setPassword, characterAllowed])
 
   useEffect(() => {
-    passwordGenerator();
-  }, [length, numberAllowed, characterAllowed, passwordGenerator]);
+    passwordGenerator()
+    // console.log("I got a call")
+  }, [length, numberAllowed, characterAllowed, passwordGenerator])
 
-  const copyToClipboard = useCallback(() => {
-    passwordRef.current?.select();
+  const handleClick = () => {
+    passwordGenerator()
+  }
+
+  const copyToClipboard  = () => {
     window.navigator.clipboard.writeText(password);
-  }, [password]);
+    passwordRef.current?.select()
+  }
 
-  const handleButtonClick = () => {
-    passwordGenerator();
-  };
   return (
     <>
       <div className="bg-[#0a2d4d] w-full min-h-screen pb-4">
@@ -53,8 +52,8 @@ function App() {
             className="block w-full mt-2 rounded-lg focus:border-none focus:outline-none text-[#121111] p-4 text-center text-3xl"
             id="textInput"
             readOnly
-            value={password}
             ref={passwordRef}
+            value={password}
           />
           <div className="flex items-center justify-center gap-4 my-4">
             <button
@@ -65,12 +64,10 @@ function App() {
             </button>
             <BiRefresh
               className="text-[4em] hover:rotate-[150deg] transition-all"
-              onClick={handleButtonClick}
-            />
+             onClick={handleClick}/>
             <button
               className="bg-blue-600 py-1 px-2 text-md md:py-2 md:px-4 rounded-full w-full"
-              onClick={copyToClipboard}
-            >
+             onClick={copyToClipboard}>
               Copy Password
             </button>
           </div>
@@ -96,7 +93,7 @@ function App() {
                   className="w-6 h-6 rounded-lg focus:border-none focus:outline-none"
                   name="number"
                   id="number"
-                  onClick={() => setNumberAllowed((prev) => !prev)}
+                  onClick={() => setNumberAllowed(prev => !prev)}
                 />
                 <label htmlFor="number">Number</label>
               </div>
@@ -106,7 +103,7 @@ function App() {
                   className="w-6 h-6 rounded-lg focus:border-none focus:outline-none"
                   name="symbol"
                   id="symbol"
-                  onClick={() => setCharacterAllowed((prev) => !prev)}
+                  onClick={() => setCharacterAllowed(prev => !prev)}
                 />
                 <label htmlFor="symbol">Symbol</label>
               </div>

@@ -1,6 +1,6 @@
 const Banner = () => {
   return <>
-    <div className="flex items-center md:flex-row md:text-left md:justify-between max-w-[800px] mx-2 md:mx-auto bg-[#c2eaff] md:px-8 py-4 md:py-12 rounded my-12 flex-col justify-center text-center gap-4">
+    <div className="hidden md:flex items-center md:flex-row md:text-left md:justify-between max-w-[800px] mx-2 md:mx-auto bg-[#c2eaff] md:px-8 py-4 md:py-12 rounded my-12 flex-col justify-center text-center gap-4">
         <div>
             <h2 className="text-2xl leading-6">Your passwords, wherever you are</h2>
             <p className="leading-4 my-2">Store your new password in 1Password so you can fill it from any device.</p>
